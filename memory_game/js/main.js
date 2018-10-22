@@ -23,7 +23,11 @@ var cards = [
   }
 ];
 var cardsInPlay = [];
+var matchAlert = document.querySelector('.match-alert');
 
+var matchMessage = function (message) {
+  matchAlert.innerHTML = message;
+};
 
 var createBoard = function(){
   for (var i = 0; i < cards.length; i++) {
@@ -37,9 +41,9 @@ var createBoard = function(){
 
 var checkForMatch = function(){
   if (cardsInPlay[0] === cardsInPlay[1]) {
-    alert("You found a match!");
+    matchMessage('<h3 class="match">You found a match!</h3>');
   } else {
-    alert("Sorry, try again.");
+    matchMessage('<h3 class="no-match">Sorry, try again.</h3>');
   }
 }
 

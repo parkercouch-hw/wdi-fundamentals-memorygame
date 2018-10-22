@@ -1,32 +1,40 @@
+:root {
+  --primary-color: #F15B31;
+  --secondary-color: #00A6B3;
+  --light-color: #FFFFFF;
+  --dark-color: #000000;
+  --neutral-color: #0D2C40;
+}
+
 body {
   text-align: center;
   margin: 0;
 }
 
 header {
-  background-color: #F15B31;
-  color: #FFFFFF;
+  background-color: var(--primary-color);
+  color: var(--light-color);
   padding: 30px 20px;
 }
 
 header h1 {
-  color: #FFFFFF;
+  color: var(--light-color);
 }
 
 nav {
-  background-color: #00A6B3;
-  color: #FFFFFF;
+  background-color: var(--secondary-color);
+  color: var(--light-color);
   padding: 20px 0;
 }
 
 nav a {
-  color: #FFFFFF;
+  color: var(--light-color);
   margin: 0 20px;
   border-bottom: 2px solid transparent;
 }
 
 a:hover {
-  border-color: #FFFFFF;
+  border-color: var(--light-color);
 }
 
 main {
@@ -37,8 +45,8 @@ main {
 footer {
   text-transform: uppercase;
   padding: 0 20px;
-  background-color: #0D2C40;
-  color: #FFFFFF;
+  background-color: var(--neutral-color);
+  color: var(--light-color);
   font-size: 14px;
   letter-spacing: .08em;
   font-weight: 500;
@@ -55,7 +63,7 @@ footer {
 }
 
 .name {
-  color: #F15B31;
+  color: var(--primary-color);
   font-weight: 700;
 }
 
@@ -66,7 +74,7 @@ h1, h2, h3, h4, a {
 }
 
 h1, h2, h3, h4 {
-  color: #0D2C40;
+  color: var(--neutral-color);
 }
 
 h1 {
@@ -82,7 +90,7 @@ h2 {
 
 a {
   text-decoration: none;
-  color: #F15B31;
+  color: var(--primary-color);
   font-weight: 600;
   font-size: 18px;
 }
@@ -95,6 +103,14 @@ p {
 
 img {
   margin: 40px 8px 0;
+}
+
+.match {
+  color: var(--primary-color);
+}
+
+.noMatch {
+  color: var(--secondary-color);  
 }
 
 .clearfix:after {
