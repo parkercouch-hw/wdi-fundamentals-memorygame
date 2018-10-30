@@ -1,29 +1,29 @@
-//console.log("Up and running!");
+// console.log("Up and running!");
 
-var cardOptions = [
+const cardOptions = [
   {
-    rank: "queen",
-    suit: "hearts",
-    cardImage: "images/queen-of-hearts.png"
+    rank: 'queen',
+    suit: 'hearts',
+    cardImage: 'images/queen-of-hearts.png',
   },
   {
-    rank: "king",
-    suit: "hearts",
-    cardImage: "images/king-of-hearts.png"
+    rank: 'king',
+    suit: 'hearts',
+    cardImage: 'images/king-of-hearts.png',
   },
   {
-    rank: "queen",
-    suit: "diamonds",
-    cardImage: "images/queen-of-diamonds.png"
+    rank: 'queen',
+    suit: 'diamonds',
+    cardImage: 'images/queen-of-diamonds.png',
   },
   {
-    rank: "king",
-    suit: "diamonds",
-    cardImage: "images/king-of-diamonds.png"
-  }
+    rank: 'king',
+    suit: 'diamonds',
+    cardImage: 'images/king-of-diamonds.png',
+  },
 ];
 
-var cards = [];
+const cards = [];
 
 var cardsInPlay = [];
 var matchAlert = document.querySelector('.match-alert');
@@ -33,11 +33,11 @@ var matchMessage = function(message) {
 };
 
 //In place shuffle. Fisher-Yates Algorithm
-var shuffleCards = function(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
+const shuffleCards = (array) => {
+  for (let i = array.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
 };
 
 var generateCards = function(sizeOfDeck, shuffle) {
