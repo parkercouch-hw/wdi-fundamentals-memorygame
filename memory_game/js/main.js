@@ -41,8 +41,14 @@ const shuffleCards = (array) => {
 const checkForMatch = function () {
   if (cardsInPlay[0] === cardsInPlay[1]) {
     matchMessage('<h3 class="match">You found a match!</h3>');
+    // Check if board is cleared
+    // Remove matched pair from game (replace with blank image)
+    // remove event listener
+    // timeout then reset message to "Flip a card"
   } else {
     matchMessage('<h3 class="no-match">Sorry, try again.</h3>');
+    // Flip cards back over
+    // timeout then reset message to "Flip a card"
   }
 };
 
@@ -75,10 +81,25 @@ const createBoard = function () {
     const cardElement = document.createElement('img');
     cardElement.setAttribute('src', 'images/back.png');
     cardElement.setAttribute('data-id', i);
+    // cardElement.setAttribute('data-shown', true); // Holding off until implementation added
     cardElement.addEventListener('click', flipCard);
     document.getElementById('game-board').appendChild(cardElement);
   }
 };
 
+const resetBoard = function () {
+  const board = document.getElementById('game-board');
+  while (board.lastChild) {
+    board.removeChild(board.lastChild);
+  }
+  generateCards(10, shuffleCards);
+  createBoard();
+};
+
+const createControls = function () {
+  document.querySelector('.reset').addEventListener('click', resetBoard);
+};
+
+createControls();
 generateCards(10, shuffleCards);
 createBoard();
