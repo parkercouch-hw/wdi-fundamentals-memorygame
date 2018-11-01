@@ -87,6 +87,13 @@ const createBoard = function () {
   }
 };
 
+const drawBoard = function (deck, board) {
+  for (let i = 0; i < deck.length; i += 1) {
+    const currCard = board[i];
+
+  }
+}
+
 const resetBoard = function () {
   const board = document.getElementById('game-board');
   while (board.lastChild) {
