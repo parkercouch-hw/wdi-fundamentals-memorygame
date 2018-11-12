@@ -49,30 +49,45 @@ const checkIfCleared = function () {
   if (!cards.some(x => x.matched === false)) {
     // Display completion message
     // Display score
-    // Reset board/Start Over
+    resetBoard();
   }
 };
 
 const checkForMatch = function () {
-  if (cardsInPlay[0] === cardsInPlay[1]) {
+  const card1Id = cardsInPlay[0];
+  const card2Id = cardsInPlay[1];
+  const card1 = document.querySelector('[data-id="' + card1Id + '"]');
+  const card2 = document.querySelector('[data-id="' + card2Id + '"]');
+
+  if (cards[card1Id].rank === cards[card2Id].rank) {
     matchMessage('<h3 class="match">You found a match!</h3>');
+    cards[card1Id].matched = true;
+    cards[card2Id].matched = true;
+
+    card1.setAttribute('src', 'images/blank.png');
+    card1.removeEventListener('click', flipCard);
+
+    card2.setAttribute('src', 'images/blank.png');
+    card2.removeEventListener('click', flipCard);
+
+    score += 100;    
+
     checkIfCleared();
-    // Remove matched pair from game (replace with blank image)
-    // remove event listener
   } else {
     matchMessage('<h3 class="no-match">Sorry, try again.</h3>');
     // Flip cards back over
+    card1.setAttribute('src', 'images/back.png');
+    card2.setAttribute('src', 'images/back.png');
+
+    score -= 10;
   }
   cardsInPlay.length = 0;
   window.setTimeout(matchMessage, 1000, '<h3>Flip Again!</h3>');
 };
 
 const flipCard = function () {
-  const cardId = this.getAttribute('data-id');
-  // console.log("User flipped " + cards[cardId].rank);
-  // console.log("Suit: " + cards[cardId].suit);
-  // console.log("Image Path: " + cards[cardId].cardImage);
-  cardsInPlay.push(cards[cardId].rank);
+  const cardId = Number(this.getAttribute('data-id'));
+  cardsInPlay.push(cardId);
 
   this.setAttribute('src', cards[cardId].cardImage);
 
@@ -86,7 +101,7 @@ const generateCards = function (sizeOfDeck, cardPool) {
   const deck = [];
   for (let i = 0; deck.length < sizeOfDeck; i += cardPool.length * 2) {
     for (let j = 0; deck.length < sizeOfDeck && j < cardPool.length; j += 1) {
-      deck.push(cardPool[j], cardPool[j]);
+      deck.push(Object.assign({}, cardPool[j]), Object.assign({}, cardPool[j]));
     }
   }
   return deck;
@@ -97,23 +112,17 @@ const createBoard = function () {
     const cardElement = document.createElement('img');
     cardElement.setAttribute('src', 'images/back.png');
     cardElement.setAttribute('data-id', i);
-    // cardElement.setAttribute('data-shown', true); // Holding off until implementation added
     cardElement.addEventListener('click', flipCard);
     document.getElementById('game-board').appendChild(cardElement);
   }
 };
-
-// const drawBoard = function (deck, board) {
-//   for (let i = 0; i < deck.length; i += 1) {
-//     const currCard = board[i];
-//   }
-// };
 
 const resetBoard = function () {
   const board = document.getElementById('game-board');
   while (board.lastChild) {
     board.removeChild(board.lastChild);
   }
+  cards.length = 0;
   cards = shuffleCards(generateCards(12, cardOptions));
   createBoard();
 };
