@@ -70,7 +70,7 @@ const checkForMatch = function () {
     card2.setAttribute('src', 'images/blank.png');
     card2.removeEventListener('click', flipCard);
 
-    score += 100;    
+    score += 100;
 
     checkIfCleared();
   } else {
