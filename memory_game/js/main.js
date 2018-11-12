@@ -3,25 +3,30 @@ const cardOptions = [
     rank: 'queen',
     suit: 'hearts',
     cardImage: 'images/queen-of-hearts.png',
+    matched: false,
   },
   {
     rank: 'king',
     suit: 'hearts',
     cardImage: 'images/king-of-hearts.png',
+    matched: false,
   },
   {
     rank: 'queen',
     suit: 'diamonds',
     cardImage: 'images/queen-of-diamonds.png',
+    matched: false,
   },
   {
     rank: 'king',
     suit: 'diamonds',
     cardImage: 'images/king-of-diamonds.png',
+    matched: false,
   },
 ];
 
-const cards = [];
+let cards = [];
+let score = 0;
 
 const cardsInPlay = [];
 const matchAlert = document.querySelector('.match-alert');
@@ -30,26 +35,36 @@ const matchMessage = function (message) {
   matchAlert.innerHTML = message;
 };
 
-// In place shuffle. Fisher-Yates Algorithm
-const shuffleCards = (array) => {
+// Fisher-Yates Algorithm
+const shuffleCards = (arr) => {
+  const array = arr;
   for (let i = array.length - 1; i > 0; i -= 1) {
     const j = Math.floor(Math.random() * (i + 1));
     [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+};
+
+const checkIfCleared = function () {
+  if (!cards.some(x => x.matched === false)) {
+    // Display completion message
+    // Display score
+    // Reset board/Start Over
   }
 };
 
 const checkForMatch = function () {
   if (cardsInPlay[0] === cardsInPlay[1]) {
     matchMessage('<h3 class="match">You found a match!</h3>');
-    // Check if board is cleared
+    checkIfCleared();
     // Remove matched pair from game (replace with blank image)
     // remove event listener
-    // timeout then reset message to "Flip a card"
   } else {
     matchMessage('<h3 class="no-match">Sorry, try again.</h3>');
     // Flip cards back over
-    // timeout then reset message to "Flip a card"
   }
+  cardsInPlay.length = 0;
+  window.setTimeout(matchMessage, 1000, '<h3>Flip Again!</h3>');
 };
 
 const flipCard = function () {
@@ -66,14 +81,15 @@ const flipCard = function () {
   }
 };
 
-const generateCards = function (sizeOfDeck, shuffle) {
+const generateCards = function (sizeOfDeck, cardPool) {
   // Function to add cards depending on selected size of board
-  for (let i = 0; cards.length < sizeOfDeck; i += cardOptions.length * 2) {
-    for (let j = 0; cards.length < sizeOfDeck && j < cardOptions.length; j += 1) {
-      cards.push(cardOptions[j], cardOptions[j]);
+  const deck = [];
+  for (let i = 0; deck.length < sizeOfDeck; i += cardPool.length * 2) {
+    for (let j = 0; deck.length < sizeOfDeck && j < cardPool.length; j += 1) {
+      deck.push(cardPool[j], cardPool[j]);
     }
   }
-  shuffle(cards);
+  return deck;
 };
 
 const createBoard = function () {
@@ -87,19 +103,18 @@ const createBoard = function () {
   }
 };
 
-const drawBoard = function (deck, board) {
-  for (let i = 0; i < deck.length; i += 1) {
-    const currCard = board[i];
-
-  }
-}
+// const drawBoard = function (deck, board) {
+//   for (let i = 0; i < deck.length; i += 1) {
+//     const currCard = board[i];
+//   }
+// };
 
 const resetBoard = function () {
   const board = document.getElementById('game-board');
   while (board.lastChild) {
     board.removeChild(board.lastChild);
   }
-  generateCards(10, shuffleCards);
+  cards = shuffleCards(generateCards(12, cardOptions));
   createBoard();
 };
 
@@ -108,5 +123,5 @@ const createControls = function () {
 };
 
 createControls();
-generateCards(10, shuffleCards);
+cards = shuffleCards(generateCards(12, cardOptions));
 createBoard();
