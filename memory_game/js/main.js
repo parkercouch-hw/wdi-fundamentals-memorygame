@@ -47,8 +47,11 @@ const shuffleCards = (arr) => {
 
 const checkIfCleared = function () {
   if (!cards.some(x => x.matched === false)) {
-    // Display completion message
-    // Display score
+    // Temporary end of game message
+    alert(`
+    You win!
+    Score: ${score}
+    `);
     resetBoard();
   }
 };
@@ -125,6 +128,7 @@ const resetBoard = function () {
   cards.length = 0;
   cards = shuffleCards(generateCards(12, cardOptions));
   createBoard();
+  matchMessage('<h3>Flip to find a match</h3>');
 };
 
 const createControls = function () {
