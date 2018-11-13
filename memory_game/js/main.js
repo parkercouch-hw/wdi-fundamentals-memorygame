@@ -25,6 +25,34 @@ const cardOptions = [
   },
 ];
 
+$.fn.extend({
+  animateCss: function(animationName, callback) {
+    var animationEnd = (function(el) {
+      var animations = {
+        animation: 'animationend',
+        OAnimation: 'oAnimationEnd',
+        MozAnimation: 'mozAnimationEnd',
+        WebkitAnimation: 'webkitAnimationEnd',
+      };
+
+      for (var t in animations) {
+        if (el.style[t] !== undefined) {
+          return animations[t];
+        }
+      }
+    })(document.createElement('div'));
+
+    this.addClass('animated ' + animationName).one(animationEnd, function() {
+      $(this).removeClass('animated ' + animationName);
+
+      if (typeof callback === 'function') callback();
+    });
+
+    return this;
+  },
+});
+
+
 let cards = [];
 let score = 0;
 
@@ -67,25 +95,27 @@ const checkForMatch = function () {
     cards[card1Id].matched = true;
     cards[card2Id].matched = true;
 
-    card1.setAttribute('src', 'images/blank.png');
     card1.removeEventListener('click', flipCard);
-
-    card2.setAttribute('src', 'images/blank.png');
     card2.removeEventListener('click', flipCard);
 
-    score += 100;
-
-    checkIfCleared();
+    $(card1).add(card2).animateCss('flipOutY', function() {
+      card1.setAttribute('src', 'images/blank.png');
+      card2.setAttribute('src', 'images/blank.png');
+      score += 100;
+      checkIfCleared();
+    });
   } else {
     matchMessage('<h3 class="no-match">Sorry, try again.</h3>');
     // Flip cards back over
     card1.setAttribute('src', 'images/back.png');
     card2.setAttribute('src', 'images/back.png');
+    $(card1).add(card2).animateCss('flipOutY', function() {
+      score -= 10;
+    });
 
-    score -= 10;
   }
   cardsInPlay.length = 0;
-  window.setTimeout(matchMessage, 1000, '<h3>Flip Again!</h3>');
+  window.setTimeout(matchMessage, 500, '<h3>Flip Again!</h3>');
 };
 
 const flipCard = function () {
@@ -93,10 +123,12 @@ const flipCard = function () {
   cardsInPlay.push(cardId);
 
   this.setAttribute('src', cards[cardId].cardImage);
+  $(this).animateCss('flipInY', function() {
+    if (cardsInPlay.length === 2) {
+      checkForMatch();
+    }
+  });
 
-  if (cardsInPlay.length === 2) {
-    checkForMatch();
-  }
 };
 
 const generateCards = function (sizeOfDeck, cardPool) {
@@ -115,6 +147,7 @@ const createBoard = function () {
     const cardElement = document.createElement('img');
     cardElement.setAttribute('src', 'images/back.png');
     cardElement.setAttribute('data-id', i);
+    cardElement.classList.add('animated', 'fast');
     cardElement.addEventListener('click', flipCard);
     document.getElementById('game-board').appendChild(cardElement);
   }
