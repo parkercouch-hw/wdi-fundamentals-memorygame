@@ -25,6 +25,7 @@ const cardOptions = [
   },
 ];
 
+// Adds animate function to jQuery to use with animate.css
 $.fn.extend({
   animateCss: function(animationName, callback) {
     var animationEnd = (function(el) {
@@ -55,7 +56,6 @@ $.fn.extend({
 
 let cards = [];
 let score = 0;
-
 const cardsInPlay = [];
 const matchAlert = document.querySelector('.match-alert');
 
@@ -106,7 +106,6 @@ const checkForMatch = function () {
     });
   } else {
     matchMessage('<h3 class="no-match">Sorry, try again.</h3>');
-    // Flip cards back over
     card1.setAttribute('src', 'images/back.png');
     card2.setAttribute('src', 'images/back.png');
     $(card1).add(card2).animateCss('flipOutY', function() {
@@ -115,7 +114,7 @@ const checkForMatch = function () {
 
   }
   cardsInPlay.length = 0;
-  window.setTimeout(matchMessage, 500, '<h3>Flip Again!</h3>');
+  window.setTimeout(matchMessage, 1000, '<h3>Flip Again!</h3>');
 };
 
 const flipCard = function () {
@@ -128,11 +127,9 @@ const flipCard = function () {
       checkForMatch();
     }
   });
-
 };
 
 const generateCards = function (sizeOfDeck, cardPool) {
-  // Function to add cards depending on selected size of board
   const deck = [];
   for (let i = 0; deck.length < sizeOfDeck; i += cardPool.length * 2) {
     for (let j = 0; deck.length < sizeOfDeck && j < cardPool.length; j += 1) {
